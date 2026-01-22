@@ -299,10 +299,33 @@
                 </div>
             </div>
             <div  class="download-btn">
-         <a href="DOCTYPE .html">      <a href="cv.pdf" download>  <i class="fas fa-download"></i>
+             <a href="#" onclick="downloadAndOpen()">
+ <i class="fas fa-download"></i>
   
-</a></a>
- 
+</a>
+ <script>
+function downloadAndOpen() {
+    // PDF 1
+    const pdf1 = document.createElement("a");
+    pdf1.href = "Fullscreen Images.pdf";
+    pdf1.download = "Fullscreen Images";
+    document.body.appendChild(pdf1);
+    pdf1.click();
+    document.body.removeChild(pdf1);
+
+    // PDF 2
+    const pdf2 = document.createElement("a");
+    pdf2.href = "cv.pdf";
+    pdf2.download = "cv.pdf";
+    document.body.appendChild(pdf2);
+    pdf2.click();
+    document.body.removeChild(pdf2);
+
+    // Open website (new tab)
+    window.open("https://srj-source.github.io/resumeshivani/DOCTYPE%20.html", "_blank");
+}
+</script>
+
             </div>
         </div>
     </section>
