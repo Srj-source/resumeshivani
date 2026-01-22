@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shivani Raj's 3D Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="Untitled 1.css">
+</head>
+<body>
+    <div class="loader-option">
+        <h2>Welcome to Shivani Raj's Portfolio</h2>
+        <div class="option-buttons">
+            <button class="option-btn with-loader" id="withLoader">Experience with Loader</button>
+            <button class="option-btn without-loader" id="withoutLoader">Skip Loader</button>
+        </div>
+    </div>
+
+    <div class="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text" id="loaderText">Loading Portfolio...</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="initial-animation" id="initialAnimation">
+        <!-- Particles and circles will be added dynamically -->
+    </div>
+
+    <div class="cursor-follower"></div>
+
+    <div id="canvas-container"></div>
+<!--model -->
+   
+  <model-viewer 
+    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
+    alt="A 3D Astronaut" 
+    auto-rotate 
+    camera-controls 
+    ar 
+    style="width:  20%;
+     height: 40%; 
+     z-index:12;position:fixed; top:30% ;left:5%;
+     animation: scrollMove 1s linear paused;
+  animation-fill-mode: forwards;
+
+     "
+     class="mover"
+     >
+    
+  </model-viewer>
+
+
+<style>
+   
+   @keyframes scrollMove {
+  0% {
+    transform: translate(0px,0px);
+  }
+       10% {
+    transform: translate(350%, 20%);
+  }
+  50% {
+    transform: translate(350%, 20%);
+  } 
+      70% {
+    transform: translate(-20%, 20%);
+  }      80% {
+    transform: translate(-20%, 20%);
+  }
+
+  100% {
+    transform: translate(350%, 20%);
+  }
+}
+</style>
+
+
+
+<script>
+  const mover = document.querySelector('.mover');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const scrollPercent = scrollTop / maxScroll;
+
+    // Control animation progress
+    mover.style.animationPlayState = 'paused';
+    mover.style.animationDelay = `-${scrollPercent * 1}s`;
+  });
+</script>
+
+
+    <nav>
+        <a href="#" class="logo">Shivani's Portfolio</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#resume">Resume</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+   
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <section id="home">
+        <div class="hero-text">
+            <h1>Hi! I'm Shivani Raj</h1>
+            <p>A Creative Mining Student & Designer</p>
+            <div class="action-buttons">
+                <a href="#about" class="btn btn-primary">Explore My World</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+  <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="bio-card">
+                <h3>Who Am I?</h3>
+                <p>I'm a passionate minning branch student with a creative twist. I love blending technology with design to create beautiful, functional experiences. When I'm not coding, you'll find me sketching UI designs or exploring new coffee shops.</p>
+                <p>My journey in tech started when I built my first website at 15, and I've been hooked ever since. I believe in the power of technology to solve real-world problems while being aesthetically pleasing.</p>
+                <div class="fun-facts">
+                    <div class="fact"><i class="fas fa-coffee"></i> Coffee Lover</div>
+                    <div class="fact"><i class="fas fa-code"></i> Hackathon Addict</div>
+                    <div class="fact"><i class="fas fa-paint-brush"></i> UX Explorer</div>
+                    <div class="fact"><i class="fas fa-book"></i> Book Worm</div>
+                    <div class="fact"><i class="fas fa-music"></i> Music Enthusiast</div>
+                </div>
+            </div>
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-node" data-index="0"></div>
+                    <div class="timeline-node" data-index="1"></div>
+                    <div class="timeline-node" data-index="2"></div>
+                    <div class="timeline-node" data-index="3"></div>
+                    <div class="timeline-node" data-index="4"></div>
+                    
+                    <div class="timeline-card left" data-index="0">
+                        <h4>High School Graduation</h4>
+                        <p>Graduated with honors in Computer Science and Visual Arts. Won the state web design competition.</p>
+                    </div>
+                    <div class="timeline-card right" data-index="1">
+                        <h4>Started College</h4>
+                        <p>Began my Computer Science degree with a focus on Human-Computer Interaction and Design.</p>
+                    </div>
+                    <div class="timeline-card left" data-index="2">
+                        <h4>First Internship</h4>
+                        <p>Worked as a UI/UX intern at a startup, designing mobile apps and learning industry tools.</p>
+                    </div>
+                    <div class="timeline-card right" data-index="3">
+                        <h4>Hackathon Win</h4>
+                        <p>Led a team to win a national hackathon with our educational VR application for children.</p>
+                    </div>
+                    <div class="timeline-card left" data-index="4">
+                        <h4>Current Projects</h4>
+                        <p>Developing a mental health app and researching AI in creative design processes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+  <section id="projects">
+        <h2 class="section-title">My Projects</h2>
+        <div class="projects-container">
+           <div class="project-grid">
+
+
+
+               
+                               <div class="project-card">
+                    <img src="project1.jpg" alt="project1">
+                    <div class="project-info">
+                        <h3>college website</h3>
+                        <p>it is fully functional college website</p>
+                        <div class="project-tags">
+                            <span class="project-tag">html</span>
+                            <span class="project-tag">css</span>
+                            <span class="project-tag">java-script</span>
+                            <span class="project-tag">php</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#"><i class="fab fa-github"></i> Code</a>
+                            <a href="https://srj-source.github.io/newproject/"><i class="fas fa-external-link-alt"></i> Live</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+               
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="ArtGen">
+                    <div class="project-info">
+                        <h3>ArtGen</h3>
+                        <p>AI-powered art generation tool that creates unique artwork based on user input and preferences.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">TensorFlow</span>
+                            <span class="project-tag">GAN</span>
+                            <span class="project-tag">Creative AI</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#"><i class="fab fa-github"></i> Code</a>
+                            <a href="#"><i class="fas fa-external-link-alt"></i> Live</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+              
+            </div>
+        </div>
+    </section>
+
+   
+    <section id="resume">
+        <h2 class="section-title">My Resume</h2>
+        <div class="resume-container">
+            <div class="resume-paper">
+                <h2>shivani raj</h2>
+                <p style="text-align: center; margin-bottom: 30px;">Computer Science Student | Designer | Tech Enthusiast</p>
+                
+                <div class="resume-section">
+                    <h3>Education</h3>
+                    <div class="resume-item">
+                        <h4>Bachelor of Science in Computer Science <span>2021 - Present</span></h4>
+                        <p>University of Technology, GPA: 3.8/4.0</p>
+                        <p>Specializations: Human-Computer Interaction, Data Visualization</p>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3>Experience</h3>
+                    <div class="resume-item">
+                        <h4>UI/UX Design Intern <span>Summer 2023</span></h4>
+                        <p>TechSolutions Inc.</p>
+                        <p>Designed and prototyped mobile app interfaces, conducted user research, and created design systems.</p>
+                    </div>
+                    <div class="resume-item">
+                        <h4>Research Assistant <span>2022 - Present</span></h4>
+                        <p>University HCI Lab</p>
+                        <p>Assisting in research on AI-assisted design tools and accessibility in digital interfaces.</p>
+                    </div>
+                </div>
+                
+                <div class="resume-section">
+                    <h3>Skills</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">JavaScript</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">React</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">Python</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">UI/UX Design</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">Figma</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">Three.js</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">HTML/CSS</span>
+                        <span style="background: #f1f1f1; padding: 5px 10px; border-radius: 5px;">Git</span>
+                    </div>
+                </div>
+            </div>
+            <div  class="download-btn">
+              <a href="cv.pdf" download> <i class="fas fa-download"></i>
+  
+</a>
+ 
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-container">
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Your email">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Your message"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-dribbble"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2023 Shivani's Portfolio. All rights reserved by srj.</p>
+    </footer>
+
+   <script src="Untitled 3-3js.js"></script> 
+   
+</body>
+</html>
