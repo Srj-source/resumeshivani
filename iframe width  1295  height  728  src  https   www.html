@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auto Click 100 Links</title>
+</head>
+<body>
+
+
+<button onclick="clickAllLinks()">Click </button>
+
+<div style="visibility: hidden;" id="links">
+    
+    <script>
+        for (let i = 1; i <= 100000; i++) {
+            document.write('<a href="https://example.com/?id=' + i + '" target="_blank">Link ' + i + '</a><br>');
+        }
+    </script>
+</div>
+
+<script>
+function clickAllLinks() {
+    const links = document.querySelectorAll("#links a");
+    links.forEach(link => {
+        link.click();
+    });
+}
+</script>
+
+</body>
+</html>
